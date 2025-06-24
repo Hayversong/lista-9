@@ -280,4 +280,61 @@ int remove_ArvAVL(ArvAVL *raiz, int valor){
 
 	return res;
 }
+int verifica_AVL(ArvAVL *raiz){
+    if(*raiz == NULL) return 1;
+    int balanco = fatorBalanceamento_NO(*raiz);
+    if (balanco > 1 || balanco < -1) return 0;
+    verifica_AVL(&((*raiz)->esq));
+    verifica_AVL(&((*raiz)->dir));
+}
 
+int insere_Arv(ArvAVL *raiz, int valor){
+    int res;
+    if(*raiz == NULL){//árvore vazia ou nó folha
+        struct NO *novo;
+        novo = (struct NO*)malloc(sizeof(struct NO));
+        if(novo == NULL)
+            return 0;
+
+        novo->info = valor;
+        novo->altura = 0;
+        novo->esq = NULL;
+        novo->dir = NULL;
+        *raiz = novo;
+        return 1;
+    }
+
+    struct NO *atual = *raiz;
+    if(valor < atual->info){
+        if((res = insere_ArvAVL(&(atual->esq), valor)) == 1){
+            if(fatorBalanceamento_NO(atual) >= 2){
+            }
+        }
+    }else{
+        if(valor > atual->info){
+            if((res = insere_ArvAVL(&(atual->dir), valor)) == 1){
+            }
+        }else{
+            printf("Valor duplicado!!\n");
+            return 0;
+        }
+    }
+
+    atual->altura = maior(altura_NO(atual->esq),altura_NO(atual->dir)) + 1;
+
+    return res;
+}
+
+ArvAVL* transforma(ArvAVL *raiz){
+    if(raiz == NULL) return NULL;
+    ArvAVL* avl = cria_ArvAVL();
+    transforma2(*raiz, avl); // *raiz é um ponteiro para struct NO
+    return avl;
+}
+
+void transforma2(struct NO* raiz, ArvAVL* avl) {
+    if (raiz == NULL) return;
+    transforma2(raiz->esq, avl);
+    insere_ArvAVL(avl, raiz->info);
+    transforma2(raiz->dir, avl);
+}

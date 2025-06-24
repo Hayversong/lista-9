@@ -13,3 +13,8 @@ void preOrdem_ArvAVL(ArvAVL *raiz);
 void emOrdem_ArvAVL(ArvAVL *raiz);
 void posOrdem_ArvAVL(ArvAVL *raiz);
 void RotacaoRR(ArvAVL *raiz);
+int verifica_AVL(ArvAVL *raiz);
+int insere_Arv(ArvAVL *raiz, int valor);
+ArvAVL* transforma();
+void transforma2(struct NO* raiz, ArvAVL* avl);
+

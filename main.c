@@ -61,17 +61,47 @@ int main(){
     printf("\n\n");
 
     /*
-        5) Descreva passo a passo o funcionamento da função
-        insere_ArvAVL(ArvAVL *raiz, int valor), descreva também o uso de
-        qualquer outras funções dentro dessa. Utilize trechos do código para
-        exemplificar.
+        7) Faça uma função que dada uma árvore verifica se a mesma é AVL
     */
+    if(verifica_AVL(avl)==0){
+        printf("\nNao eh AVL :(\n");
+    } else {
+        printf("\nEh AVL :)\n");
+    }
     /*
-        Descrição passo a passo da função insere_ArvAVL:
-
+        Lógica usada: Percorre recursivamente a arvore até o último elemento,
+        em cada elemento ela vai verificando se o balanço está dentro dos padrões
+        da arvore AVL, caso não esteja, retorna zero, caso chegue até o final, retorna 1.
     */
     libera_ArvAVL(avl);
-
-
+    /*
+        8) Faça uma função Arv* transforma(Arv *raiz) que dada uma árvore binária
+        de busca qualquer, retorna uma nova árvore AVL.
+    */
+    ArvAVL* arvore = cria_ArvAVL();
+    for(i=0;i<N;i++){
+        insere_Arv(arvore,dados[i]);
+    }
+    printf("\nArvore:\n");
+    emOrdem_ArvAVL(arvore);
+    printf("\n\n");
+    if(verifica_AVL(arvore)==0){
+        printf("\nNao eh AVL :(\n");
+    } else {
+        printf("\nEh AVL :)\n");
+    }
+    printf("\nTransformando em AVL...\n");
+    arvore = transforma(arvore);
+    if(verifica_AVL(arvore)==0){
+        printf("\nNao eh AVL :(\n");
+    } else {
+        printf("\nEh AVL :)\n");
+    }
+    /*
+    Lógica usada: a ideia principal foi de criar uma arvore avl auxiliar,
+    depois a avore não avl foi percorrida e cada valor passado foi inserido
+    na arvore avl auxiliar, ao final ela foi retornada.
+    */
+    libera_ArvAVL(arvore);
     return 0;
 }

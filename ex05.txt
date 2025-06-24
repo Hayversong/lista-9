@@ -2,7 +2,7 @@ primeiro ela verifica se o nó é folha ou se a arvore está vazia
 /*
 	if(*raiz == NULL) 
 */
-caso caía em alguns desses casos, é alocado espaço para um novo nó, esse novo nó recebe info
+caso caia em alguns desses casos, é alocado espaço para um novo nó, esse novo nó recebe info
 como valor, altura como zero, esquerda e direita como NULL e no final a raiz é 
 atualizada como o nó
 /*
@@ -13,7 +13,7 @@ atualizada como o nó
 	*raiz = novo;
 */
 depois disso a função é finalizada. 
-Caso não caía nessa primeira verificação, ainda temos três caminhos diferentes, 
+Caso não caia nessa primeira verificação, ainda temos três caminhos diferentes, 
 primeiro, caso o valor tenha que ir para a direita, segundo, caso o valor tenha
 que ir para a esquerda, e terceiro, caso o valor seja duplicado.
 /*

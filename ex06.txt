@@ -1,0 +1,121 @@
+primeiro verifica se o valor existe
+/*
+	if(*raiz == NULL){// valor não existe
+	    printf("valor não existe!!\n");
+	    return 0;
+	}
+*/
+depois ele decide para qual lado vai através de três verificações, esquerda, direita ou já chegou
+/*
+	if(valor < (*raiz)->info) 
+	if((*raiz)->info < valor)
+	if((*raiz)->info == valor)
+*/
+ - if(valor < (*raiz)->info): faz uma chamada recursiva passando a esquerda enquanto
+	o retorno for igual a 1
+	/*
+		 if((res = remove_ArvAVL(&(*raiz)->esq,valor)) == 1)
+	*/
+	Depois do valor ser removido, é chamada a função fatorBalanceamento, que é uma função
+	recursiva que calcula o valor do balanceamento
+	/*
+		int fatorBalanceamento_NO(struct NO* no){
+    			return labs(altura_NO(no->esq) - altura_NO(no->dir));
+		}
+	*/	
+	Caso o valor for igual ou maior que dois, significa que está desbalanceada, então é 
+	necessário balancear, então ele verifica para qual lado deve balancear e chama a função
+	necessária
+	/*
+                if(altura_NO((*raiz)->dir->esq) <= altura_NO((*raiz)->dir->dir))
+                    RotacaoRR(raiz);
+                else
+                    RotacaoRL(raiz);
+	*/
+- if((*raiz)->info < valor): mesma coisa que a anterior mas para o outro lado :),
+	também tem o diferencial que ao invés de chamar a função RotacaoRR ou RotacaoRL, chama a RotacaoLL
+	ou RotacaoLR.
+- if((*raiz)->info == valor): primeiro verifica se o nó só tem um filho ou se não tem nenhum, caso só tenha 1
+	ele é selecionado e depois é dado free
+	/*
+		if(((*raiz)->esq == NULL || (*raiz)->dir == NULL)){// nó tem 1 filho ou nenhum
+			struct NO *oldNode = (*raiz);
+			if((*raiz)->esq != NULL)
+                		*raiz = (*raiz)->esq;
+            		else
+                		*raiz = (*raiz)->dir;
+			free(oldNode);
+	*/
+	caso a arvore tenha dois filhos, é procurado o menor valor usando a função procuraMenor, substitui 
+	o valor atual pelo menor encontrado, e chama a função de remover de novo passando a direita e o menor,
+	após isso verifica o balanceamento e chama a função necessária
+	/*
+		struct NO* temp = procuraMenor((*raiz)->dir);
+		(*raiz)->info = temp->info;
+		remove_ArvAVL(&(*raiz)->dir, (*raiz)->info);
+            	if(fatorBalanceamento_NO(*raiz) >= 2){
+			if(altura_NO((*raiz)->esq->dir) <= altura_NO((*raiz)->esq->esq))
+				RotacaoLL(raiz);
+			else
+				RotacaoLR(raiz);
+			}
+	*/
+	por fim, se a raiz não for nula a altura do nó é atualizada e retorna 1
+	/*
+		if (*raiz != NULL)
+            		(*raiz)->altura = maior(altura_NO((*raiz)->esq),altura_NO((*raiz)->dir)) + 1;
+		return 1;
+	*/
+no final a altura da raiz é atualiada e o retorno é feito
+/*
+	(*raiz)->altura = maior(altura_NO((*raiz)->esq),altura_NO((*raiz)->dir)) + 1;
+	return res;
+*/
+Explicação das outras funções que também foram usadas:
+ - procuraMenor: percorre até o nó mais a esquerda e retorna ele
+	/*
+		struct NO *no1 = atual;
+    		struct NO *no2 = atual->esq;
+    		while(no2 != NULL){
+        		no1 = no2;
+        		no2 = no2->esq;
+    		}
+    		return no1;
+	*/
+ - maior: receber dois inteiros e retorna o maior entre eles
+	/*
+		if(x > y)
+        		return x;
+   		 else
+        		return y;
+	*/
+ - altura_NO: recebe um nó e verifica se ele está vazio, caso contrário, retorna a altura
+	/*
+		if(no == NULL)
+        		return -1;
+    		else
+    			return no->altura;
+	*/
+ - RotacaoRR: recebe um nó e salva o ponteiro do filho direito dele em B, depois o filho direito
+		recebe o esquerdo do B, o esquerdo do B é atualizado para *raiz, depois atualiza
+		a altura dos nós e por fim atualiza a raíz.
+	/*
+	  	B = (*raiz)->dir;
+    		(*raiz)->dir = B->esq;
+    		B->esq = *raiz;
+    		(*raiz)->altura = maior(altura_NO((*raiz)->esq),altura_NO((*raiz)->dir)) + 1;
+    		B->altura = maior(altura_NO(B->dir),(*raiz)->altura) + 1;
+		*raiz = B;
+	*/
+ - RotacaoLL: faz exatamente a mesma coisa que o RotacaoLL, só que onde passava esq passa a 
+		passar dir, e onde passava dir agora passa esq.
+ - RotacaoLR: aplica o RotacaoRR no filho esquerdo e depois RotacaoLL a raiz
+	/*
+		RotacaoRR(&(*raiz)->esq);
+    		RotacaoLL(raiz);
+	*/
+ - RotacaoRL: aplica o RotacaoLL no filho direito e depois RotacaoRR a raiz
+	/*
+		RotacaoLL(&(*raiz)->dir);
+    		RotacaoRR(raiz);
+	*/
