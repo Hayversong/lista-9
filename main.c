@@ -60,6 +60,16 @@ int main(){
     emOrdem_ArvAVL(avl);
     printf("\n\n");
 
+    /*
+        5) Descreva passo a passo o funcionamento da função
+        insere_ArvAVL(ArvAVL *raiz, int valor), descreva também o uso de
+        qualquer outras funções dentro dessa. Utilize trechos do código para
+        exemplificar.
+    */
+    /*
+        Descrição passo a passo da função insere_ArvAVL:
+
+    */
     libera_ArvAVL(avl);
 
 

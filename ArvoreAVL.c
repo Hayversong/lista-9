@@ -130,6 +130,17 @@ int consulta_ArvAVL(ArvAVL *raiz, int valor){
     return 0;
 }
 
+void RotacaoRR(ArvAVL *raiz){
+    printf("RotacaoRR\n");
+    struct NO *B;
+    B = (*raiz)->dir;
+    (*raiz)->dir = B->esq;
+    B->esq = *raiz;
+    (*raiz)->altura = maior(altura_NO((*raiz)->esq),altura_NO((*raiz)->dir)) + 1;
+    B->altura = maior(altura_NO(B->dir),(*raiz)->altura) + 1;
+    *raiz = B;
+}
+
 //=================================
 void RotacaoLL(ArvAVL *raiz){//LL
     printf("RotacaoLL\n");
@@ -270,13 +281,3 @@ int remove_ArvAVL(ArvAVL *raiz, int valor){
 	return res;
 }
 
-void RotacaoRR(ArvAVL *raiz){
-    printf("RotacaoRR\n");
-    struct NO *B;
-    B = (*raiz)->dir;
-    (*raiz)->dir = B->esq;
-    B->esq = *raiz;
-    (*raiz)->altura = maior(altura_NO((*raiz)->esq),altura_NO((*raiz)->dir)) + 1;
-    B->altura = maior(altura_NO(B->dir),(*raiz)->altura) + 1;
-    *raiz = B;
-}

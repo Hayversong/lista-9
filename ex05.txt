@@ -1,0 +1,91 @@
+primeiro ela verifica se o nó é folha ou se a arvore está vazia 
+/*
+	if(*raiz == NULL) 
+*/
+caso caía em alguns desses casos, é alocado espaço para um novo nó, esse novo nó recebe info
+como valor, altura como zero, esquerda e direita como NULL e no final a raiz é 
+atualizada como o nó
+/*
+	novo->info = valor;
+	novo->altura = 0;
+	novo->esq = NULL;
+	novo->dir = NULL;
+	*raiz = novo;
+*/
+depois disso a função é finalizada. 
+Caso não caía nessa primeira verificação, ainda temos três caminhos diferentes, 
+primeiro, caso o valor tenha que ir para a direita, segundo, caso o valor tenha
+que ir para a esquerda, e terceiro, caso o valor seja duplicado.
+/*
+	if(valor < atual->info)
+	if(valor > atual->info)
+	else
+*/
+if(valor < atual->info): faz uma chamada recursiva passando a esquerda enquanto
+	o retorno for igual a 1
+	/*
+		if((res = insere_ArvAVL(&(atual->dir), valor)) == 1)
+	*/
+	Depois do valor ser inserido, é chamada a função fatorBalanceamento, que é uma função
+	recursiva que calcula o valor do balanceamento
+	/*
+		int fatorBalanceamento_NO(struct NO* no){
+    			return labs(altura_NO(no->esq) - altura_NO(no->dir));
+		}
+	*/	
+	Caso o valor for igual ou maior que dois, significa que está desbalanceada, então é 
+	necessário balancear, então ele verifica para qual lado deve balancear e chama a função
+	necessária
+	/*
+		if(valor < (*raiz)->esq->info ){
+			RotacaoLL(raiz);
+		}else{
+			RotacaoLR(raiz);
+       	 	}
+	*/
+if(valor < atual->info): mesma coisa que a anterior mas para o outro lado :),
+	também tem o diferencial que ao invés de chamar a função RotacaoLL ou RotacaoLR, chama a RotacaoRR
+	ou RotacaoRL.
+else: essa parte não faz nenhuma alteração na arvore, só printa que o valor está duplicado e retorna zero
+Depois de passar por essa partes é feita a atualização da altura do nó
+/*
+	atual->altura = maior(altura_NO(atual->esq), altura_NO(atual->dir)) + 1;	
+*/
+Explicação das outras funções que também foram usadas:
+ - maior: receber dois inteiros e retorna o maior entre eles
+	/*
+		if(x > y)
+        		return x;
+   		 else
+        		return y;
+	*/
+ - altura_NO: recebe um nó e verifica se ele está vazio, caso contrário, retorna a altura
+	/*
+		if(no == NULL)
+        		return -1;
+    		else
+    			return no->altura;
+	*/
+ - RotacaoRR: recebe um nó e salva o ponteiro do filho direito dele em B, depois o filho direito
+		recebe o esquerdo do B, o esquerdo do B é atualizado para *raiz, depois atualiza
+		a altura dos nós e por fim atualiza a raíz.
+	/*
+	  	B = (*raiz)->dir;
+    		(*raiz)->dir = B->esq;
+    		B->esq = *raiz;
+    		(*raiz)->altura = maior(altura_NO((*raiz)->esq),altura_NO((*raiz)->dir)) + 1;
+    		B->altura = maior(altura_NO(B->dir),(*raiz)->altura) + 1;
+		*raiz = B;
+	*/
+ - RotacaoLL: faz exatamente a mesma coisa que o RotacaoLL, só que onde passava esq passa a 
+		passar dir, e onde passava dir agora passa esq.
+ - RotacaoLR: aplica o RotacaoRR no filho esquerdo e depois RotacaoLL a raiz
+	/*
+		RotacaoRR(&(*raiz)->esq);
+    		RotacaoLL(raiz);
+	*/
+ - RotacaoRL: aplica o RotacaoLL no filho direito e depois RotacaoRR a raiz
+	/*
+		RotacaoLL(&(*raiz)->dir);
+    		RotacaoRR(raiz);
+	*/
